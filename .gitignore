@@ -1,0 +1,6 @@
+# Object files
+*.o
+o-optimize
+
+# Results files
+results.pgm
