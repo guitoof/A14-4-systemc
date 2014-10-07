@@ -414,9 +414,9 @@ SC_MODULE(cl_platform_prv) {
       pic->pinout_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](pinout_counter_slv_port) ;
 
       //wiring pic to ACC
-      pic->request_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](request_acc_slv_port) ;
-      pic->ready_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](ready_acc_slv_port) ;
-      pic->pinout_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](pinout_acc_slv_port) ;      
+      pic->request_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](request_acc_slv_port) ;
+      pic->ready_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](ready_acc_slv_port) ;
+      pic->pinout_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](pinout_acc_slv_port) ;      
       
       // --------------- HWS -----------------       
       sprintf(buffer, "HWS");

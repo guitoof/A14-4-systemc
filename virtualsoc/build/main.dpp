@@ -1,5 +1,5 @@
 main.o main.dpp : \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/main.cpp \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/main.cpp \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/systemc.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/systemc \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/kernel/sc_cmnhdr.h \
@@ -140,21 +140,21 @@ main.o main.dpp : \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/tracing/sc_wif_trace.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/utils/sc_iostream.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/utils/sc_utils_ids.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/stats.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/address.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/config.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/globals.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/mem_class.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/debug.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/core_signal.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/ocp_signal.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/PINOUT.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/sim_support.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/parser.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/power.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_platform_prv.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/globals.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/core_signal.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/stats.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/address.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/config.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/mem_class.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/debug.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/core_signal.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/ocp_signal.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/PINOUT.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/sim_support.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/parser.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/power.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_platform_prv.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/core_signal.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/arm_v6_processor.hpp \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/arm_v5_mmu.hpp \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/arm_v6_coproc.hpp \
@@ -219,10 +219,10 @@ main.o main.dpp : \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/common.hpp \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/host_memory.hpp \
  /opt/ensta/pack/virtualsoc/TLM-2.0.1/include/tlm/tlm_utils/simple_initiator_socket.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/PINOUT.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/sim_support.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/address.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/stats.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/PINOUT.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/sim_support.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/address.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/stats.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/processor.hpp \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/processor_base.hpp \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/context.hpp \
@@ -252,17 +252,17 @@ main.o main.dpp : \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/simlight/slv6_iss.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/simlight/slv6_iss_h_prelude.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/LIBSIMSOC/include/libsimsoc/processors/arm_v6/simlight/slv6_condition.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_1st_stage_demux.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_lic.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_pic.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/cache_module.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/cache_RPU.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/cache_storagetypes.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/cache_config.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/cache_address.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_memory.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/core/ext_mem.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_DRAM-memory-mp.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_1st_stage_demux.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_lic.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_pic.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_module.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_RPU.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_storagetypes.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_config.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_address.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_memory.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/ext_mem.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_DRAM-memory-mp.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/MemorySystem.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/SimulatorObject.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/SystemConfiguration.h \
@@ -275,15 +275,16 @@ main.o main.dpp : \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/Rank.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/Bank.h \
  /opt/ensta/pack/virtualsoc/VirtualSoc/3rd_party/src/DRAMSim2/Callback.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_L3_mux_NM.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_cru.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_semaphore.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_hws.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_dma.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_output_mem.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_platform_defs.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_counter.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_platform_shr.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_sharedI_cache.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_xbar_sharedI.h \
- /home/d/diallo/Cours/3A/A14/A14-4/TP3/virtualsoc/src/cluster/cl_miss_mux.h
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_L3_mux_NM.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_cru.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_semaphore.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_hws.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_dma.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_output_mem.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_platform_defs.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_counter.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_acc.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_platform_shr.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_sharedI_cache.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_xbar_sharedI.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_miss_mux.h
