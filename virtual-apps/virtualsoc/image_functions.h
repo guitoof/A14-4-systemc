@@ -30,21 +30,20 @@ median (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, un
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
 
-    kernel[0] = *(imageIn+(half_kernel_size-1)*(size_x) + half_kernel_size-1);
-    kernel[1] = *(imageIn+(half_kernel_size-1)*(size_x) + half_kernel_size);
-    kernel[2] = *(imageIn+(half_kernel_size-1)*(size_x) + half_kernel_size+1);
-
-    kernel[3] = *(imageIn+half_kernel_size*(size_x) + half_kernel_size-1);
-    kernel[4] = *(imageIn+half_kernel_size*(size_x) + half_kernel_size);
-    kernel[5] = *(imageIn+half_kernel_size*(size_x) + half_kernel_size+1);
-
-    kernel[6] = *(imageIn+(half_kernel_size+1)*(size_x) + half_kernel_size-1);
-    kernel[7] = *(imageIn+(half_kernel_size+1)*(size_x) + half_kernel_size);
-    kernel[8] = *(imageIn+(half_kernel_size+1)*(size_x) + half_kernel_size+1);
-
     //Compute
     for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
     {
+        kernel[0] = *(imageIn+(c-1)*(size_x) + half_kernel_size-1);
+        kernel[1] = *(imageIn+(c-1)*(size_x) + half_kernel_size);
+        kernel[2] = *(imageIn+(c-1)*(size_x) + half_kernel_size+1);
+
+        kernel[3] = *(imageIn+c*(size_x) + half_kernel_size-1);
+        kernel[4] = *(imageIn+c*(size_x) + half_kernel_size);
+        kernel[5] = *(imageIn+c*(size_x) + half_kernel_size+1);
+
+        kernel[6] = *(imageIn+(c+1)*(size_x) + half_kernel_size-1);
+        kernel[7] = *(imageIn+(c+1)*(size_x) + half_kernel_size);
+        kernel[8] = *(imageIn+(c+1)*(size_x) + half_kernel_size+1);
         for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )    // Iterate columns
         {        
 
@@ -70,21 +69,6 @@ median (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, un
             *(imageOut+c*size_x+d) = kernel[4];     
             
         }
-
-        // Shift 1st row
-        kernel[0] = kernel[3];
-        kernel[1] = kernel[4];
-        kernel[2] = kernel[5];
-
-        // Shift 2nd row
-        kernel[3] = kernel[6];
-        kernel[4] = kernel[7];
-        kernel[5] = kernel[8]; 
-
-        // Update 3nd row
-        kernel[6] = *(imageIn+(c+1)*(size_x) + d-1);
-        kernel[7] = *(imageIn+(c+1)*(size_x) + d);
-        kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
 
     }
         
