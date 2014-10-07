@@ -4,6 +4,9 @@
 #include "config.h"
 #include "sim_support_flags.h"
 
+#include "stdint.h"
+typedef enum { false, true } bool;
+
 #define LOCAL_SHARED __attribute__ ((section (".local_shared")))
 #define GLOBAL_SHARED __attribute__ ((section (".global_shared")))
 
@@ -88,6 +91,8 @@ void SIGNAL(int ID);
 // WAIT - Spins on a lock
 void WAIT(int ID);
 
+void SET_LOCK(int ID);
+void RELEASE_LOCK(int ID);
 
 // ---------------------------------
 // Shared memory allocation function
