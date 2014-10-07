@@ -1,0 +1,4 @@
+export OWN_VIRTUALSOC_DIR="/home/v/ventroux/etudiants/module_a14_tp3/virtualsoc"
+export VSOC_APP_DIR="/home/v/ventroux/etudiants/module_a14_tp3/virtualsoc-apps"
+export PATH=${OWN_VIRTUALSOC_DIR}/bin:${PATH}
+
