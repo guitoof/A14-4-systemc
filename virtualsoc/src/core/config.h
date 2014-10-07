@@ -5,6 +5,9 @@
 // Builtin command line parameter defaults
 //------------------------------------------------------------
 
+
+
+////////
 #define BUILTIN_DEFAULT_CURRENT_ISS          ARMv6
 #define BUILTIN_DEFAULT_CURRENT_ARCH       SINGLE_CLUSTER
 #define BUILTIN_DEFAULT_N_CORES              4
@@ -81,13 +84,13 @@
 #define N_HWS_PORTS                          (N_HWS_PRG_PORTS + N_HWS_SLV_PORTS)
 
 //Accelerator (ACC)
-/*#define ACC_BASE_ADDR						0x0C0000000
+#define ACC_BASE_ADDR						0x0C0000000
 #define ACC_START_ADDR						0x0C0000000
 #define ACC_READY_ADDR						0X0C0000004
 #define ACC_MEM_ADDR						0x0C0000010
 #define ACC_MEM_SIZE						0x001000000
 #define N_ACC_PORTS							1
-*/
+
 
 //Counter (COUNTER)
 #define COUNTER_BASE_ADDR					0x0D0000000
@@ -133,7 +136,5 @@
 #define __DELTA_L3      __DELTA_L2; \
                         __DELTA_L2; \
 //-------- ---------------------------------
-
-
 
 #endif // __CONFIG_H__

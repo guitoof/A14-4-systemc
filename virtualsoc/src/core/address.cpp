@@ -117,8 +117,16 @@ bool Addresser::PhysicalInSimSupportSpace(uint32_t address)
     return false;
 }
 
-
-bool Addresser::IsInCOUNTERSpace(uint32_t address, uint16_t tile_id)
+bool Addresser::IsInCOUNTERSpace( uint32_t address, uint16_t tile_id ) 
 {
-  return ((address >= (uint32_t)(tile_id*TILE_SPACING + COUNTER_BASE_ADDR)) && (address < (uint32_t)tile_id*TILE_SPACING + COUNTER_BASE_ADDR + COUNTER_MEM_SIZE)) ? true : false;
+
+	return ( (address >= (uint32_t)(tile_id*TILE_SPACING + COUNTER_BASE_ADDR)) && (address < (uint32_t)(tile_id*TILE_SPACING + COUNTER_BASE_ADDR + COUNTER_MEM_SIZE))) ? true : false ;
+
+}
+
+bool Addresser::IsInACCSpace( uint32_t address, uint16_t tile_id ) 
+{
+
+  return ( (address >= (uint32_t)(tile_id*TILE_SPACING + ACC_BASE_ADDR)) && (address < (uint32_t)(tile_id*TILE_SPACING + ACC_BASE_ADDR + ACC_MEM_SIZE))) ? true : false ;
+
 }
