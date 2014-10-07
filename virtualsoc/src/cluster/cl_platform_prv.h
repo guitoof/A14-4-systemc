@@ -33,8 +33,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #include "cl_counter.h"
+#include "cl_acc.h"
 
 using namespace std;
 using namespace sc_core;
@@ -59,7 +59,8 @@ SC_MODULE(cl_platform_prv) {
     cl_1st_stage_demux* dma_int_demux;
     cl_1st_stage_demux* dma_ext_demux;
     cl_semaphore *sem;
-    cl_counter *counter;
+    cl_acc *acc;
+    cl_counter *counter ;
     cl_output_mem* outm;
 
     void stats();
@@ -125,10 +126,17 @@ SC_MODULE(cl_platform_prv) {
     sc_signal<bool>     *request_hws_slv_port;
     sc_signal<bool>     *ready_hws_slv_port;
 
-    sc_signal<PINOUT>   pinout_counter_slv_port;
-    sc_signal<bool>     request_counter_slv_port;
-    sc_signal<bool>     ready_counter_slv_port;
-    
+    // Signals from PIC to ACC
+    sc_signal<PINOUT>   pinout_acc_slv_port ;
+    sc_signal<bool>     request_acc_slv_port ;
+    sc_signal<bool>     ready_acc_slv_port ;
+
+    // Signals from PIC to COUNTER
+    sc_signal<PINOUT>   pinout_counter_slv_port ;
+    sc_signal<bool>     request_counter_slv_port ;
+    sc_signal<bool>     ready_counter_slv_port ;
+
+
     //Signals from PIC to OUTPUT MEM
     sc_signal<PINOUT>   pinout_outm_slv_port;
     sc_signal<bool>     request_outm_slv_port;
@@ -352,7 +360,7 @@ SC_MODULE(cl_platform_prv) {
 
       // --------------- Peripheral INTC -----------------
       sprintf(buffer, "pic");   
-      pic = new cl_pic(buffer, 0, N_CORES + 2, N_CORES + 2 + N_HWS_PORTS + N_OUTM_PORTS + 1 + 1 + N_COUNTER_PORTS, XBAR_TCDM_DELAY, XBAR_TCDM_SCHED, tf, tracing);
+      pic = new cl_pic(buffer, 0, N_CORES + 2, N_CORES + 2 + N_HWS_PORTS + N_OUTM_PORTS + 1 + 1 + N_COUNTER_PORTS + N_ACC_PORTS, XBAR_TCDM_DELAY, XBAR_TCDM_SCHED, tf, tracing);
       pic->clock(ClockGen_1);
       //wiring cores to pic
       for(i = 0; i < N_CORES+2; i++)
@@ -388,6 +396,8 @@ SC_MODULE(cl_platform_prv) {
       pic->ready_slave[N_CORES+2 + N_HWS_PORTS ](ready_outm_slv_port);
       pic->pinout_slave[N_CORES+2 + N_HWS_PORTS ](pinout_outm_slv_port);
 
+
+
       //wiring pic to semaphores
       pic->request_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS](request_sem[0]);
       pic->ready_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS](ready_sem[0]);
@@ -399,11 +409,14 @@ SC_MODULE(cl_platform_prv) {
       pic->pinout_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 1](pinout_dma_slv);
       
       //wiring pic to COUNTER
-      pic->request_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](request_counter_slv_port);
-      pic->ready_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](ready_counter_slv_port);
-      pic->pinout_slave[N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](pinout_counter_slv_port);
+      pic->request_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](request_counter_slv_port) ;
+      pic->ready_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](ready_counter_slv_port) ;
+      pic->pinout_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 2](pinout_counter_slv_port) ;
 
       //wiring pic to ACC
+      pic->request_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](request_acc_slv_port) ;
+      pic->ready_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](ready_acc_slv_port) ;
+      pic->pinout_slave[ N_CORES+2 + N_HWS_PORTS + N_OUTM_PORTS + 3](pinout_acc_slv_port) ;      
       
       // --------------- HWS -----------------       
       sprintf(buffer, "HWS");
@@ -425,13 +438,22 @@ SC_MODULE(cl_platform_prv) {
         hws->slave_int[i](cl_sync_signal[i]);
 
       // --------------- ACC ----------------
+      sprintf(buffer, "ACC");
+      acc = new cl_acc(buffer, 0x0, ACC_BASE_ADDR, ACC_MEM_SIZE) ;
+      acc->clock(ClockGen_1);
+      acc->slave_port (pinout_acc_slv_port);
+      acc->sl_rdy(ready_acc_slv_port) ;
+      acc->sl_req(request_acc_slv_port) ;
+
       // --------------- COUNTER ----------------
       sprintf(buffer, "COUNTER");
-      counter = new cl_counter(buffer, 0x0, COUNTER_BASE_ADDR, COUNTER_MEM_SIZE);
-      counter->clock(ClockGen_1);
+      counter = new cl_counter(buffer, 0x0, COUNTER_BASE_ADDR, COUNTER_MEM_SIZE) ;
+      counter->clock(ClockGen_1) ;
       counter->slave_port (pinout_counter_slv_port);
-      counter->sl_rdy(ready_counter_slv_port);
-      counter->sl_req(request_counter_slv_port);
+      counter->sl_rdy(ready_counter_slv_port) ;
+      counter->sl_req(request_counter_slv_port) ;
+
+
 
       // --------------- OUTM ----------------
       sprintf(buffer, "OUTM");
@@ -858,9 +880,13 @@ SC_MODULE(cl_platform_prv) {
 
 	    delete sem;
 
-      delete counter;
+      delete counter ;
+      delete acc ;
+
 
 	}
+
+
 
 };
 

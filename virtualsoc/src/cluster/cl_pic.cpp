@@ -58,7 +58,7 @@ void cl_pic::arbiter()
       //---- OUTM
       else if (addresser->IsInOUTMSpace(address[id], ID))
       {
-        ids = num_slaves-4;
+        ids = num_slaves-5;
 #ifdef DEBUG_PIC_ROUTING
         printf("%s - 0x%08X\tIsInOUTMSpace - core %d slave %d @ %.1f\n", name(), address[id], id, ids, sc_simulation_time());
 #endif
@@ -68,7 +68,7 @@ void cl_pic::arbiter()
       //--- SEM
       else if (addresser->IsInSemSpace(address[id], ID))
       {
-        ids = num_slaves-3;
+        ids = num_slaves-4;
 #ifdef DEBUG_PIC_ROUTING
         printf("%s - 0x%08X\tIsInSemSpace - core %d slave %d @ %.1f\n", name(), address[id], id, ids, sc_simulation_time());
 
@@ -79,7 +79,7 @@ void cl_pic::arbiter()
       //---- DMA
       else if (addresser->IsInDmaSpace(address[id], ID))
       {
-        ids = num_slaves-2;
+        ids = num_slaves-3;
 #ifdef DEBUG_PIC_ROUTING
         printf("%s - 0x%08X\tIsInDmaSpace - core %d slave %d @ %.1f\n", name(), address[id], id, ids, sc_simulation_time());
 
@@ -87,16 +87,33 @@ void cl_pic::arbiter()
         req_table[(ids*num_masters)+id] = true;
       }
 
+	
       //---- COUNTER
-      else if (addresser->IsInCOUNTERSpace(address[id], ID))
-      {
-        ids = num_slaves-1;
-        #ifdef DEBUG_PIC_ROUTING
-        printf("%s - 0x%08X\tIsInCOUNTERSpace - core %d slave %d @ %1.f\n", name(), address[id], id, ids, sc_simulation_time());
-        #endif
-        req_table[(ids*num_masters)+id] = true;
-      }
-      //---- ACC
+	else if (addresser -> IsInCOUNTERSpace(address[id], ID))
+	{
+		ids = num_slaves-2 ;
+		#ifdef DEBUG_PIC_ROUTING
+		printtf("%s - 0x%08X\tIsInCOUNTERSpace - core %d slave %d @ %.1f\n" name(), address[id], id, ids, sc_simulation_time() );
+		#endif
+		req_table[(ids*num_masters)+id] = true ;
+	}      
+	
+  //---- ACC
+  else if (addresser -> IsInACCSpace(address[id], ID))
+  {
+    ids = num_slaves-1 ;
+    #ifdef DEBUG_PIC_ROUTING
+    printtf("%s - 0x%08X\tIsInACCSpace - core %d slave %d @ %.1f\n" name(), address[id], id, ids, sc_simulation_time() );
+    #endif
+    req_table[(ids*num_masters)+id] = true ;
+  }      
+  
+
+
+
+
+
+
 
       else
       {

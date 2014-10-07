@@ -1,5 +1,6 @@
-parser.o parser.dpp : \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/parser.cpp \
+cl_acc.o cl_acc.dpp : \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_acc.cpp \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/cluster/cl_acc.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/systemc.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/systemc \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/kernel/sc_cmnhdr.h \
@@ -101,6 +102,13 @@ parser.o parser.dpp : \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/tracing/sc_wif_trace.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/utils/sc_iostream.h \
  /opt/ensta/pack/virtualsoc/systemc-2.2.0-patched/include/sysc/utils/sc_utils_ids.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/core_signal.h \
  /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/config.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/debug.h
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/ocp_signal.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/PINOUT.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/stats.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/address.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/mem_class.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/debug.h \
+ /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/core_signal.h
