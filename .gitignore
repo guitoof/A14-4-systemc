@@ -2,5 +2,7 @@
 *.o
 o-optimize
 
+TargetMem_1.mem
+
 # Results files
 results.pgm
