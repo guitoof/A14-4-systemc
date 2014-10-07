@@ -59,7 +59,7 @@ SC_MODULE(cl_platform_prv) {
     cl_1st_stage_demux* dma_int_demux;
     cl_1st_stage_demux* dma_ext_demux;
     cl_semaphore *sem;
-    cl_hws *acc;
+    cl_acc *acc;
     cl_counter *counter ;
     cl_output_mem* outm;
 
@@ -126,7 +126,7 @@ SC_MODULE(cl_platform_prv) {
     sc_signal<bool>     *request_hws_slv_port;
     sc_signal<bool>     *ready_hws_slv_port;
 
-    // Signals from PIC to COUNTER
+    // Signals from PIC to ACC
     sc_signal<PINOUT>   pinout_acc_slv_port ;
     sc_signal<bool>     request_acc_slv_port ;
     sc_signal<bool>     ready_acc_slv_port ;
@@ -439,11 +439,11 @@ SC_MODULE(cl_platform_prv) {
 
       // --------------- ACC ----------------
       sprintf(buffer, "ACC");
-      counter = new cl_acc(buffer, 0x0, ACC_BASE_ADDR, ACC_MEM_SIZE) ;
-      counter->clock(ClockGen_1) ;
-      counter->slave_port (pinout_acc_slv_port);
-      counter->sl_rdy(ready_acc_slv_port) ;
-      counter->sl_req(request_acc_slv_port) ;
+      acc = new cl_acc(buffer, 0x0, ACC_BASE_ADDR, ACC_MEM_SIZE) ;
+      acc->clock(ClockGen_1);
+      acc->slave_port (pinout_acc_slv_port);
+      acc->sl_rdy(ready_acc_slv_port) ;
+      acc->sl_req(request_acc_slv_port) ;
 
       // --------------- COUNTER ----------------
       sprintf(buffer, "COUNTER");
