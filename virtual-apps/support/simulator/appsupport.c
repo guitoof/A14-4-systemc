@@ -1,6 +1,6 @@
 #include "appsupport.h"
 
-//volatile int *semaphores      = (int *)CL_SEM_BASE;
+volatile int *semaphores      = (int *)CL_SEM_BASE;
 //volatile int *hw_lock         = ((int *)(CL_TCDM_BASE + CL_TCDM_SIZE - CL_TCDM_TAS_SIZE)); //(see config.h)
 volatile int *hw_lock      = (int *)CL_SEM_BASE;
 
@@ -56,6 +56,15 @@ void WAIT(int ID)
   while (hw_lock[ID])
   {
   }
+}
+
+void SET_LOCK(int ID)
+{
+  hw_lock[ID] = 1;
+}
+void RELEASE_LOCK(int ID)
+{
+  hw_lock[ID] = 0;
 }
 
 
