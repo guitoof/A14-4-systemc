@@ -12,6 +12,7 @@
 
 //#define HW_MEDIAN
 #define TIMING
+#define HW_MEDIAN
 
 
 //Global variables in local shared
@@ -44,9 +45,12 @@ int main ()
     counter_init();
     #endif
 
-    /*#ifdef HW_MEDIAN
+    #ifdef HW_MEDIAN
+
+    _printstrp("Start Process with accelerator");
+
     //HW IMPLEMENTATION
-    if(myid==0) {
+    if(num_proc==0) {        // change myid to num_proc jeudi 10:51
     //Write
     int k;
     unsigned int tmp;
@@ -65,14 +69,15 @@ int main ()
        ImageOut1[k] = acc_read_word (k);
     }
     }
-    #else*/
+    #else
     //SW IMPLEMENTATION    
- 
+     _printstrp("Start Process without accelerator");
+
     median(MyImage,
            ImageOut1,
            IMAGE_X,
            IMAGE_Y);
-    //#endif
+    #endif
 
     //--------------------------------------------------
     #ifdef TIMING
