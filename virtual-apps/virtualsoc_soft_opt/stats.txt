@@ -3,10 +3,10 @@
 ---------------------------------------------------------------------------------
 
 
-Simulation executed: Tue Oct  7 11:13:41 2014
-Elapsed time - overall simulation: 1:21 minutes
-Total simulated master system cycles: 11773066 (23546132 ns)
-CPU cycles simulated per second: 145346.5
+Simulation executed: Thu Oct 16 10:52:18 2014
+Elapsed time - overall simulation: 0:07 minutes
+Total simulated master system cycles: 846008 (1692016 ns)
+CPU cycles simulated per second: 120858.3
 Elapsed time - processor 0 critical section: 0:00 minutes
 
 
