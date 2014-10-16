@@ -34,6 +34,9 @@ void printOptimizations() {
     #ifdef REGS
     _printstrn(" - Register usage");
     #endif
+    #ifdef ACCUMULATION
+    _printstrn(" - Accumulation");
+    #endif
     #ifdef PIPELINE
     _printstrn(" - Pipeline");
     #endif

@@ -17,6 +17,8 @@
 
 #include "opt_macros.h"
 
+#include "omp.h"
+
 #define KERNEL_SIZE 3
 
 //extern unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
@@ -40,61 +42,61 @@ median (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, un
 
     unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
 
-    #ifdef OPEN_MP
-    #pragma omp parallel
-    #pragma omp for
-    #endif
+    //#pragma omp parallel
+    //{
 
-    //Compute
-    #ifdef LOOP_INV
-    for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
-    #else
-    for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
-    #endif
-    {
-        kernel[0] = *(imageIn+(c-1)*(size_x) + half_kernel_size-1);
-        kernel[1] = *(imageIn+(c-1)*(size_x) + half_kernel_size);
-        kernel[2] = *(imageIn+(c-1)*(size_x) + half_kernel_size+1);
-
-        kernel[3] = *(imageIn+c*(size_x) + half_kernel_size-1);
-        kernel[4] = *(imageIn+c*(size_x) + half_kernel_size);
-        kernel[5] = *(imageIn+c*(size_x) + half_kernel_size+1);
-
-        kernel[6] = *(imageIn+(c+1)*(size_x) + half_kernel_size-1);
-        kernel[7] = *(imageIn+(c+1)*(size_x) + half_kernel_size);
-        kernel[8] = *(imageIn+(c+1)*(size_x) + half_kernel_size+1);
-
+        //Compute
         #ifdef LOOP_INV
-        for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
+        for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
         #else
-        for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
+        for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
         #endif
-        {        
+        {
+            kernel[0] = *(imageIn+(c-1)*(size_x) + half_kernel_size-1);
+            kernel[1] = *(imageIn+(c-1)*(size_x) + half_kernel_size);
+            kernel[2] = *(imageIn+(c-1)*(size_x) + half_kernel_size+1);
 
-            // Shift 1st col
-            kernel[0] = kernel[1];
-            kernel[3] = kernel[4];
-            kernel[6] = kernel[7];
+            kernel[3] = *(imageIn+c*(size_x) + half_kernel_size-1);
+            kernel[4] = *(imageIn+c*(size_x) + half_kernel_size);
+            kernel[5] = *(imageIn+c*(size_x) + half_kernel_size+1);
 
-            // Shift 2nd col
-            kernel[1] = kernel[2];
-            kernel[4] = kernel[5];
-            kernel[7] = kernel[8]; 
+            kernel[6] = *(imageIn+(c+1)*(size_x) + half_kernel_size-1);
+            kernel[7] = *(imageIn+(c+1)*(size_x) + half_kernel_size);
+            kernel[8] = *(imageIn+(c+1)*(size_x) + half_kernel_size+1);
 
-            // Update 3nd col
-            kernel[2] = *(imageIn+(c-1)*(size_x) + d+1);
-            kernel[5] = *(imageIn+c*(size_x) + d+1);
-            kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
+            #ifdef LOOP_INV
+            for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
+            #else
+            for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
+            #endif
+            {        
 
-            // Sort current kernel values
-            quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
+                // Shift 1st col
+                kernel[0] = kernel[1];
+                kernel[3] = kernel[4];
+                kernel[6] = kernel[7];
 
-            // Get median
-            *(imageOut+c*size_x+d) = kernel[4];     
-            
+                // Shift 2nd col
+                kernel[1] = kernel[2];
+                kernel[4] = kernel[5];
+                kernel[7] = kernel[8]; 
+
+                // Update 3nd col
+                kernel[2] = *(imageIn+(c-1)*(size_x) + d+1);
+                kernel[5] = *(imageIn+c*(size_x) + d+1);
+                kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
+
+                // Sort current kernel values
+                quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
+
+                // Get median
+                *(imageOut+c*size_x+d) = kernel[4];     
+                
+            }
+
         }
 
-    }
+    //} /* pragma omp parallel */
         
         
 }
@@ -112,15 +114,19 @@ threshold_equ(unsigned char *imageIn, unsigned int size_x, unsigned int size_y, 
     #endif
 
     unsigned int size = size_x*size_y;
-    #ifdef LOOP_INV
-    for(i=size-1; i>-1; i--)
-    #else
-    for(i=0; i<size; i++)
-    #endif
+    #pragma omp parallel
     {
-        if ( *(imageIn+i) < max )
-            *(imageIn+i) = 0;
-    } 
+        #pragma omp for
+        #ifdef LOOP_INV
+        for(i=size-1; i>-1; i--)
+        #else
+        for(i=0; i<size; i++)
+        #endif
+        {
+            if ( *(imageIn+i) < max )
+                *(imageIn+i) = 0;
+        }
+    }
 }
 
 //Sobel
@@ -130,85 +136,75 @@ sobel (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, uns
 {
     //Local variables
     #ifdef REGS
-    register unsigned int c,d;
-    register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
-    register int tmp1, tmp2, res ;
+        //Local variables
+        register unsigned char r0, r1, r2, r3, r4, r5, r6, r7, r8;
     #else
-    unsigned int c,d;
+        unsigned char r0, r1, r2, r3, r4, r5, r6, r7, r8;
+    #endif
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
-    int tmp1, tmp2, res ;
-    #endif
+    unsigned int c, d;
+    unsigned int rowOffset = half_kernel_size*size_x;
+    int hBuff, vBuff, res;
 
-    unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];    
-
-    #ifdef OPEN_MP
-    #pragma omp parallel
-    #pragma omp for
-    #endif
-
-    //Compute
-    #ifdef LOOP_INV
-    for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
-    #else
-    for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
-    #endif
-    {
-        kernel[0] = *(imageIn+(c-1)*(size_x) + half_kernel_size-1);
-        kernel[1] = *(imageIn+(c-1)*(size_x) + half_kernel_size);
-        kernel[2] = *(imageIn+(c-1)*(size_x) + half_kernel_size+1);
-
-        kernel[3] = *(imageIn+c*(size_x) + half_kernel_size-1);
-        kernel[4] = *(imageIn+c*(size_x) + half_kernel_size);
-        kernel[5] = *(imageIn+c*(size_x) + half_kernel_size+1);
-
-        kernel[6] = *(imageIn+(c+1)*(size_x) + half_kernel_size-1);
-        kernel[7] = *(imageIn+(c+1)*(size_x) + half_kernel_size);
-        kernel[8] = *(imageIn+(c+1)*(size_x) + half_kernel_size+1);
-
-        #ifdef LOOP_INV
-        for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
-        #else
-        for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
-        #endif
+        //Compute
+        #pragma omp parallel
         {
-            // Process horizontal and vertical filtering
-            tmp1 = -1 * kernel[0]
-                  + 1 * kernel[2]
-                  - 2 * kernel[3]
-                  + 2 * kernel[5]
-                  - 1 * kernel[6]
-                  + 1 * kernel[8];
+            #pragma omp for
+            #ifdef LOOP_INV
+            for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
+            #else
+            for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
+            #endif
+            {
+                r0 = *(imageIn+rowOffset-size_x+half_kernel_size-1);
+                r1 = *(imageIn+rowOffset-size_x+half_kernel_size);
+                r2 = *(imageIn+rowOffset-size_x+half_kernel_size+1);
+                r3 = *(imageIn+rowOffset+half_kernel_size-1);
+                r4 = *(imageIn+rowOffset+half_kernel_size+1);
+                r5 = *(imageIn+rowOffset+size_x+half_kernel_size-1);
+                r6 = *(imageIn+rowOffset+size_x+half_kernel_size);
+                r7 = *(imageIn+rowOffset+size_x+half_kernel_size+1);
+                #ifdef LOOP_INV
+                for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
+                #else
+                for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
+                #endif
+                {                     
+                    hBuff = -1 * r0
+                            -2 * r3
+                            -1 * r5
+                            +1 * r2
+                            +2 * r4
+                            +1 * r7;
 
-            tmp2 = -1 *  kernel[0]
-                   - 2 * kernel[1]
-                   - 1 * kernel[2]
-                   + 1 * kernel[6]
-                   + 2 * kernel[7]
-                   + 1 * kernel[8];
+                    vBuff = -1 * r0
+                            -2 * r1
+                            -1 * r2
+                            +1 * r5
+                            +2 * r6
+                            +1 * r7;
 
-            // Shift kernel
-            // Shift 1st col
-            kernel[0] = kernel[1];
-            kernel[3] = kernel[4];
-            kernel[6] = kernel[7];
+                    res = abs(hBuff)+abs(vBuff);
+                    if (res > 255)
+                        res = 255;
 
-            // Shift 2nd col
-            kernel[1] = kernel[2];
-            kernel[4] = kernel[5];
-            kernel[7] = kernel[8]; 
+                    *(imageOut + rowOffset + d) = res;
 
-            // Update 3nd col
-            kernel[2] = *(imageIn+(c-1)*(size_x) + d+1);
-            kernel[5] = *(imageIn+c*(size_x) + d+1);
-            kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
-         
-            res = abs(tmp1) + abs(tmp2) ;
-            if (res > 255)
-                res = 255 ;
+                    r0 = r1;
+                    r1 = r2;
+                    r5 = r6;
+                    r6 = r7;
+                    r2 = *(imageIn+rowOffset-size_x+d+2);
+                    r3 = *(imageIn+rowOffset+half_kernel_size);
+                    r4 = *(imageIn+rowOffset+half_kernel_size+1);
+                    r7 = *(imageIn+rowOffset+size_x+half_kernel_size+2);
 
-            *(imageOut+c*size_x+d) = res;
+                }
+                rowOffset += size_x;
+            }
         }
-    }
+
+    
 }
 
 #ifdef X86
