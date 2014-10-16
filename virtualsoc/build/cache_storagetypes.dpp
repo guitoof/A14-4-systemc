@@ -1,6 +1,0 @@
-cache_storagetypes.o cache_storagetypes.dpp : \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_storagetypes.cpp \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_storagetypes.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_config.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/config.h
