@@ -9,3 +9,7 @@ results.pgm
 
 # Build
 virtualsoc/build
+
+#examples
+virtual-apps/pipelined_test
+virtual-apps/openmp_test
