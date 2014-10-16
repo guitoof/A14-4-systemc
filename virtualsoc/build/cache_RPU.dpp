@@ -1,8 +1,0 @@
-cache_RPU.o cache_RPU.dpp : \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_RPU.cpp \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_RPU.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_storagetypes.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_config.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/globals.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/config.h \
- /home/m/montalivet/3a/A14-4_modelisation_sur_puce/TP3/git/A14-4-systemc/virtualsoc/src/core/cache_address.h

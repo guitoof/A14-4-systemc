@@ -6,3 +6,8 @@ TargetMem_1.mem
 
 # Results files
 results.pgm
+
+# Build
+virtualsoc/build
+virtualsoc/bin
+stats.txt
