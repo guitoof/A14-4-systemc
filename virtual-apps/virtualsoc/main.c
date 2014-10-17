@@ -85,10 +85,14 @@ int main ()
     //SW IMPLEMENTATION    
      _printstrp("Start Process without accelerator");
 
+    #pragma omp parallel
+    {
     median(MyImage,
            ImageOut1,
            IMAGE_X,
            IMAGE_Y);
+    }
+
     #endif
 
     //--------------------------------------------------
@@ -102,10 +106,13 @@ int main ()
     //--------------------------------------------------
     _printstrp("Start threshold filter");
  
+    #pragma omp parallel
+    {
     threshold_equ(ImageOut1,
                   IMAGE_X, 
                   IMAGE_Y, 
                   100);
+    }
  
     #ifdef TIMING
     counter_get();
@@ -117,10 +124,13 @@ int main ()
     //--------------------------------------------------
     _printstrp("Start sobel filter");
  
+    #pragma omp parallel
+    {
     sobel(ImageOut1,
-          ImageOut2,
-          IMAGE_X,
-          IMAGE_Y);
+         ImageOut2,
+         IMAGE_X,
+         IMAGE_Y);
+    }
  
     #ifdef TIMING
     counter_get();
