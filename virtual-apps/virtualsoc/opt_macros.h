@@ -20,11 +20,11 @@
 	//#define OPEN_MP
 
 // Sort algorithm :
-    // #define QUICKSORT
-    #define BUCKETSORT
+    #define QUICKSORT
+    // #define BUCKETSORT
 
 // Hardware optimization
-	 // #define HW_MEDIAN
+	 #define HW_MEDIAN
 
 void printOptimizations() {
 	_printstrn("Using optimizations :");
