@@ -97,7 +97,7 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
 
     unsigned char index = 0, sum = 0;
     int medianLimit = KERNEL_SIZE*KERNEL_SIZE/2;
-    unsigned char histogram[255];
+    unsigned char histogram[256];
     // Initialize histogramm to 0
     for (k = 255; k >= 0; --k)
       histogram[k] = 0;
@@ -117,6 +117,7 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
         sum += histogram[index++];
     *(imageOut+rowOffset+half_kernel_size) = index;
 
+    #pragma omp for
     for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )
     {
          
