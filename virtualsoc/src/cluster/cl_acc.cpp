@@ -32,7 +32,6 @@ void cl_acc::execute()
 	bool wr;
 	uint32_t size;
 
-int essai=0;
 
 	//Initializations
 	sl_rdy.write(false);
@@ -202,15 +201,18 @@ void cl_acc::acc_processing()
 void cl_acc::process1()
 
 {
+
+	int size_x = 126;
+	int size_y = 96;
+
 	#ifdef REGS
     register unsigned int c,d, e;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
-    unsigned int c,d, e;
+    unsigned int c,d;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
-    unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
 
 
 
@@ -220,19 +222,17 @@ void cl_acc::process1()
         for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
         #endif
         {
-        	cur_add = ACC_MEM_ADDR 
+            ker_sig0.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size-1 , MEM_BYTE )) ;
+            ker_sig1.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size , MEM_BYTE ));
+            ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size+1 , MEM_BYTE ));
 
-            ker_sig0.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size-1) , MEM_BYTE ) ;
-            ker_sig1.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size) , MEM_BYTE );
-            ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size+1) , MEM_BYTE );
+            ker_sig3.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size-1 , MEM_BYTE ));
+            ker_sig4.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size , MEM_BYTE ));
+            ker_sig5.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size+1 , MEM_BYTE ));
 
-            ker_sig3.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size-1) , MEM_BYTE );
-            ker_sig4.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size) , MEM_BYTE );
-            ker_sig5.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size+1) , MEM_BYTE );
-
-            ker_sig6.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size-1) , MEM_BYTE );
-            ker_sig7.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size) , MEM_BYTE );
-            ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size+1) , MEM_BYTE );
+            ker_sig6.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size-1 , MEM_BYTE ));
+            ker_sig7.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size , MEM_BYTE ));
+            ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size+1 , MEM_BYTE ));
 
             #ifdef LOOP_INV
             for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
@@ -252,14 +252,17 @@ void cl_acc::process1()
                 ker_sig7 = ker_sig8; 
 
                 // Update 3nd col
-                ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + d+1) , MEM_BYTE );  
-                ker_sig5.write(this->Read( ACC_MEM_ADDR + (c)*(size_x) + d+1) , MEM_BYTE ); 
-                ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + d+1) , MEM_BYTE ); 
+                ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + d+1 , MEM_BYTE ));  
+                ker_sig5.write(this->Read( ACC_MEM_ADDR + (c)*(size_x) + d+1 , MEM_BYTE )); 
+                ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + d+1 , MEM_BYTE )); 
 
                 // Sort current kernel values
                 // quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
               
-              
+            this->Write(ACC_MEM_ADDR + 4*(c*size_x + d) , ker_sig4, MEM_BYTE );
+            // *(imageOut+c*size_x+d) = kernel[4];     
+			}
+		}
 
 
 }

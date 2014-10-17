@@ -23,9 +23,11 @@
     // #define QUICKSORT_MEDIAN
     #define HISTOGRAM_MEDIAN
     //#define BUCKETSORT_MEDIAN
+    #define QUICKSORT
+    // #define BUCKETSORT
 
 // Hardware optimization
-	 // #define HW_MEDIAN
+	 #define HW_MEDIAN
 
 void printOptimizations() {
 	_printstrn("Using optimizations :");
