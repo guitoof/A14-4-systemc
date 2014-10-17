@@ -86,19 +86,24 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
 
     //Local variables
     #ifdef REGS
-    register unsigned int k, c,d, rowOffset;
+    register unsigned int c,d, rowOffset;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
-    unsigned int k,c,d, rowOffset = half_kernel_size*size_x;
+    unsigned int c,d, rowOffset = half_kernel_size*size_x;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
+    int k;
+
     unsigned char index = 0, sum = 0;
     int medianLimit = KERNEL_SIZE*KERNEL_SIZE/2;
-    unsigned char histogram[255];
+    unsigned char histogram[256];
+
     // Initialize histogramm to 0
     for (k = 255; k >= 0; --k)
       histogram[k] = 0;
+
+
 
     histogram[*(imageIn+rowOffset-size_x+half_kernel_size-1)]++;
     histogram[*(imageIn+rowOffset-size_x+half_kernel_size)]++;
@@ -115,9 +120,9 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
         sum += histogram[index++];
     *(imageOut+rowOffset+half_kernel_size) = index;
 
+    #pragma omp for
     for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )
     {
-         
         for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )
         {
 
@@ -134,14 +139,32 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
             // Get median
             index = 0;
             sum = 0;
-            while (sum < medianLimit)
+            while (sum < medianLimit) {
                 sum += histogram[index++];
-            *(imageOut+rowOffset+half_kernel_size) = index;
+            }
+            _printdecp("histogram", index);
+            *(imageOut+rowOffset+d) = index;
         }
-        rowOffset = (half_kernel_size+c)*size_x; 
+        rowOffset += size_x;
+
+        // Reset histogramm to 0
+        for (k = 255; k >= 0; --k)
+          histogram[k] = 0;
+
+
+        histogram[*(imageIn+rowOffset-size_x+half_kernel_size-1)]++;
+        histogram[*(imageIn+rowOffset-size_x+half_kernel_size)]++;
+        histogram[*(imageIn+rowOffset-size_x+half_kernel_size+1)]++;
+        histogram[*(imageIn+rowOffset+half_kernel_size-1)]++;
+        histogram[*(imageIn+rowOffset+half_kernel_size)]++;
+        histogram[*(imageIn+rowOffset+half_kernel_size+1)]++;
+        histogram[*(imageIn+rowOffset+size_x+half_kernel_size-1)]++;
+        histogram[*(imageIn+rowOffset+size_x+half_kernel_size)]++;
+        histogram[*(imageIn+rowOffset+size_x+half_kernel_size+1)]++;
     }
 
 }
+
 
 void triShell(int* tableau, int longueur)
 {
@@ -311,5 +334,7 @@ void triShell(int* tableau, int longueur)
         
         
 // }
+=======
+>>>>>>> b8eed908f13ec0373bc64d7533089324c3c1698b
 
 #endif //MEDIAN_H
