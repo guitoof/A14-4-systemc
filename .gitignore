@@ -6,6 +6,7 @@ TargetMem_1.mem
 
 # Results files
 results.pgm
+results*.pgm
 
 # Build
 virtualsoc/build
