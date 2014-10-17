@@ -58,12 +58,12 @@ int main ()
     _printstrp("Start Process with accelerator");
 
     //HW IMPLEMENTATION
-    if(num_proc==0) {        // change myid to num_proc jeudi 10:51
+    // if(myid==0) {        // change myid to num_proc jeudi 10:51
     //Write
     int k;
     unsigned int tmp;
-    for(k=0;k<(IMAGE_Y*IMAGE_X);k+=4) {
-       acc_write_word(k, MyImage[k]);
+    for(k=0;k<(IMAGE_Y*IMAGE_X);k+=1) {
+       acc_write_word(4*k, MyImage[k]);
     }
 
     //Start processing on hw module
@@ -72,11 +72,15 @@ int main ()
     //Wait for the end of processing on hw module
     acc_wait();
 
+    
+
     //Read
-    for(k=0;k<(IMAGE_Y*IMAGE_X);k+=4) {
-       ImageOut1[k] = acc_read_word (k);
+    for(k=0;k<(IMAGE_Y*IMAGE_X);k+=1) {
+       ImageOut1[k] = acc_read_word (4*k);
     }
-    }
+    // }
+
+
     #else
     //SW IMPLEMENTATION    
      _printstrp("Start Process without accelerator");

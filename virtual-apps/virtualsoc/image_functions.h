@@ -33,15 +33,18 @@ median (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, un
 
     //Local variables
     #ifdef REGS
-    register unsigned int c,d;
+    register unsigned int c,d, e;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
-    unsigned int c,d;
+    unsigned int c,d, e;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
     unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
 
+    #ifdef BUCKETSORT
+    unsigned char kernel_tmp[KERNEL_SIZE*KERNEL_SIZE];
+    #endif
     //#pragma omp parallel
     //{
 
@@ -87,7 +90,28 @@ median (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, un
                 kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
 
                 // Sort current kernel values
+                #ifdef QUICKSORT
                 quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
+                #else BUCKETSORT
+
+                for (c=0 ; c< 255 ; c++) 
+                    kernel_tmp[c] = 0 ;
+
+                (kernel_tmp[kernel[0]])++ ;
+                (kernel_tmp[kernel[1]])++ ;
+                (kernel_tmp[kernel[2]])++ ;
+                (kernel_tmp[kernel[3]])++ ;
+                (kernel_tmp[kernel[4]])++ ;
+                (kernel_tmp[kernel[5]])++ ;
+                (kernel_tmp[kernel[6]])++ ;
+                (kernel_tmp[kernel[7]])++ ;
+                (kernel_tmp[kernel[8]])++ ;
+
+                for (c=0, d=0; d < 255; ++d)
+                    for (e=kernel_tmp[d]; e > 0; --e)
+                        kernel[c++]=d;
+
+                #endif
 
                 // Get median
                 *(imageOut+c*size_x+d) = kernel[4];     

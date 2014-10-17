@@ -52,7 +52,7 @@ int essai=0;
 		wr = tmp_pinout.rw; 		//Read/write cmd
 		size = get_word_size ( bw );
 
-		cout<<"ACCELERATOR Execute function call"<<endl;
+		// cout<<"ACCELERATOR Execute function call"<<endl;
 
 		//It is a READ request
 		if (!wr)
@@ -187,9 +187,79 @@ void cl_acc::acc_processing()
 	//Debug
 	cout << "ACCELERATOR: START!"<<endl;
 
+
+	// filtre median !
+
+
 	wait(10,SC_NS);
 	status = CL_ACC_INACTIVE;
 
 	//Debug
 	cout << "ACCELERATOR: DONE!"<<endl;
+}
+
+
+void cl_acc::process1()
+
+{
+	#ifdef REGS
+    register unsigned int c,d, e;
+    register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    #else
+    unsigned int c,d, e;
+    int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    #endif
+
+    unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
+
+
+
+    #ifdef LOOP_INV
+        for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
+        #else
+        for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
+        #endif
+        {
+        	cur_add = ACC_MEM_ADDR 
+
+            ker_sig0.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size-1) , MEM_BYTE ) ;
+            ker_sig1.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size) , MEM_BYTE );
+            ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + half_kernel_size+1) , MEM_BYTE );
+
+            ker_sig3.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size-1) , MEM_BYTE );
+            ker_sig4.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size) , MEM_BYTE );
+            ker_sig5.write(this->Read( ACC_MEM_ADDR + c*(size_x) + half_kernel_size+1) , MEM_BYTE );
+
+            ker_sig6.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size-1) , MEM_BYTE );
+            ker_sig7.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size) , MEM_BYTE );
+            ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + half_kernel_size+1) , MEM_BYTE );
+
+            #ifdef LOOP_INV
+            for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
+            #else
+            for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
+            #endif
+            {        
+
+                // Shift 1st col
+                ker_sig0 = ker_sig1;
+                ker_sig3 = ker_sig4;
+                ker_sig6 = ker_sig7;
+
+                // Shift 2nd col
+                ker_sig1 = ker_sig2;
+                ker_sig4 = ker_sig5;
+                ker_sig7 = ker_sig8; 
+
+                // Update 3nd col
+                ker_sig2.write(this->Read( ACC_MEM_ADDR + (c-1)*(size_x) + d+1) , MEM_BYTE );  
+                ker_sig5.write(this->Read( ACC_MEM_ADDR + (c)*(size_x) + d+1) , MEM_BYTE ); 
+                ker_sig8.write(this->Read( ACC_MEM_ADDR + (c+1)*(size_x) + d+1) , MEM_BYTE ); 
+
+                // Sort current kernel values
+                // quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
+              
+              
+
+
 }

@@ -19,9 +19,12 @@
 	// OpenMP
 	//#define OPEN_MP
 
+// Sort algorithm :
+    // #define QUICKSORT
+    #define BUCKETSORT
 
 // Hardware optimization
-	//#ifndef HW_MEDIAN
+	 // #define HW_MEDIAN
 
 void printOptimizations() {
 	_printstrn("Using optimizations :");
@@ -43,7 +46,17 @@ void printOptimizations() {
     #ifdef OPEN_MP
     _printstrn(" - Open MP");
     #endif
+     #ifdef HW_MEDIAN
+    _printstrn(" - HW_MEDIAN");
+    #endif
+    #ifdef QUICKSORT
+    _printstrn(" - Quick Sort");
+    #endif
+    #ifdef BUCKETSORT
+    _printstrn(" - BUCKETSORT");
+    #endif
 }
+
 
 
 #endif

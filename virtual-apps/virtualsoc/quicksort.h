@@ -21,7 +21,7 @@ int partition( unsigned char * array, int left, int right) {
    pivot = array[left];
    i = left; j = right+1;
         
-   while( 1)
+   while(1)
    {
     do ++i; while( array[i] <= pivot && i <= right );
     do --j; while( array[j] > pivot );

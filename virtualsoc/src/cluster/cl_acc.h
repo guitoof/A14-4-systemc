@@ -1,10 +1,15 @@
 #ifndef __ACC_H__
 #define __ACC_H__
+#ifndef KERNEL_SIZE 
+#define KERNEL_SIZE 3
+#endif
+
 
 #include <systemc.h>
 #include <cassert>
 #include "core_signal.h"
 #include "stats.h"
+
 
 SC_MODULE(cl_acc) {
   
@@ -14,7 +19,14 @@ protected:
   unsigned int TARGET_MEM_SIZE;
   sc_event start_processing;
 
+
+
+
+
   char * acc_memory;
+  // unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE] ;
+  // unsigned char kernel_tmp[255] ; // 255 = max value of unsigned char
+  // int half_kernel_size = (KERNEL_SIZE - 1) / 2 ;
 
 public:
 
@@ -23,6 +35,24 @@ public:
   sc_inout<PINOUT> slave_port;
   sc_in<bool> sl_req;
   sc_out<bool> sl_rdy;
+
+  sc_event process1_ready;
+
+  sc_signal< uint32_t > ker_sig0 ;
+  sc_signal< uint32_t > ker_sig1 ;
+  sc_signal< uint32_t > ker_sig2 ;
+  sc_signal< uint32_t > ker_sig3 ;
+  sc_signal< uint32_t > ker_sig4 ;
+  sc_signal< uint32_t > ker_sig5 ;
+  sc_signal< uint32_t > ker_sig6 ;
+  sc_signal< uint32_t > ker_sig7 ;
+  sc_signal< uint32_t > ker_sig8 ;
+
+  sc_signal< uint32_t > res0;
+
+
+
+
   
   //Status
   enum cl_status { CL_ACC_INACTIVE = 0,
@@ -34,6 +64,7 @@ public:
   //Members
   void execute ( );
   void acc_processing();
+  void process1();
   uint32_t get_word_size( uint32_t bw );
 
   //addressing
@@ -142,6 +173,8 @@ public:
       sensitive << clock.pos();
       SC_THREAD(acc_processing);
       sensitive << start_processing;
+      SC_THREAD(process1);
+      sensitive << process1_ready;
 
       printf("Done!\n");
     }
