@@ -8,6 +8,29 @@
 #define KERNEL_SIZE 3
 
 
+// void insertSort() {
+//   for i := 1 to length[A]-1 do
+//     begin
+//         value := A[i];
+//         j := i - 1;
+//         done := false;
+//         repeat
+//             { To sort in descending order simply reverse
+//               the operator i.e. A[j] < value }
+//             if A[j] > value then
+//             begin
+//                 A[j + 1] := A[j];
+//                 j := j - 1;
+//                 if j < 0 then
+//                     done := true;
+//             end
+//             else
+//                 done := true;
+//         until done;
+//         A[j + 1] := value;
+//     end;
+// }
+
 void
 inline
 quicksortMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, unsigned int size_y)
@@ -86,21 +109,24 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
 
     //Local variables
     #ifdef REGS
-    register unsigned int k, c,d, rowOffset;
+    register unsigned int c,d, rowOffset;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
-    unsigned int k,c,d, rowOffset = half_kernel_size*size_x;
+    unsigned int c,d, rowOffset = half_kernel_size*size_x;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
-    unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
+    int k;
 
     unsigned char index = 0, sum = 0;
     int medianLimit = KERNEL_SIZE*KERNEL_SIZE/2;
     unsigned char histogram[256];
+
     // Initialize histogramm to 0
     for (k = 255; k >= 0; --k)
       histogram[k] = 0;
+
+
 
     histogram[*(imageIn+rowOffset-size_x+half_kernel_size-1)]++;
     histogram[*(imageIn+rowOffset-size_x+half_kernel_size)]++;
@@ -118,16 +144,16 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
     *(imageOut+rowOffset+half_kernel_size) = index;
 
     #pragma omp for
-    for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )
+    for ( c=half_kernel_size; c<(size_y-half_kernel_size); c+=2 )
     {
-         
-        for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )
+
+        for ( d=half_kernel_size+1; d<(size_x-half_kernel_size); d++ )
         {
 
             // Decrement values from the 1st column of the kernel
-            histogram[*(imageIn+rowOffset-size_x+d-1)]--;
-            histogram[*(imageIn+rowOffset+d-1)]--;
-            histogram[*(imageIn+rowOffset+size_x+d-1)]--;
+            histogram[*(imageIn+rowOffset-size_x+d-2)]--;
+            histogram[*(imageIn+rowOffset+d-2)]--;
+            histogram[*(imageIn+rowOffset+size_x+d-2)]--;
 
             // Increment values from the 3rd column of the kernel
             histogram[*(imageIn+rowOffset-size_x+d+1)]++;
@@ -137,11 +163,69 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
             // Get median
             index = 0;
             sum = 0;
-            while (sum < medianLimit)
+            while (sum < medianLimit) {
                 sum += histogram[index++];
-            *(imageOut+rowOffset+half_kernel_size) = index;
+            }
+            *(imageOut+rowOffset+d) = index;
         }
-        rowOffset = (half_kernel_size+c)*size_x; 
+        rowOffset += size_x;
+
+
+
+        d = size_x-half_kernel_size-1;
+        histogram[*(imageIn+rowOffset-2*size_x+d-1)]--;
+        histogram[*(imageIn+rowOffset-2*size_x+d)]--;
+        histogram[*(imageIn+rowOffset-2*size_x+d+1)]--;
+        histogram[*(imageIn+rowOffset+size_x+d-1)]++;
+        histogram[*(imageIn+rowOffset+size_x+d)]++;
+        histogram[*(imageIn+rowOffset+size_x+d+1)]++;
+        
+        // Get median
+        index = 0;
+        sum = 0;
+        while (sum < medianLimit) {
+            sum += histogram[index++];
+        }
+        *(imageOut+rowOffset+d) = index;
+
+
+
+        for ( d=size_x-half_kernel_size-2 ; d>half_kernel_size-1; d-- )
+        {
+            histogram[*(imageIn+rowOffset-size_x+d+2)]--;
+            histogram[*(imageIn+rowOffset+d+2)]--;
+            histogram[*(imageIn+rowOffset+size_x+d+2)]--;
+            histogram[*(imageIn+rowOffset-size_x+d-1)]++;
+            histogram[*(imageIn+rowOffset+d-1)]++;
+            histogram[*(imageIn+rowOffset+size_x+d-1)]++;
+
+            // Get median
+            index = 0;
+            sum = 0;
+            while (sum < medianLimit) {
+                sum += histogram[index++];
+            }
+            *(imageOut+rowOffset+d) = index;
+        }
+        rowOffset += size_x;
+
+
+        d = half_kernel_size;
+        histogram[*(imageIn+rowOffset-2*size_x+d-1)]--;
+        histogram[*(imageIn+rowOffset-2*size_x+d)]--;
+        histogram[*(imageIn+rowOffset-2*size_x+d+1)]--;
+        histogram[*(imageIn+rowOffset+size_x+d-1)]++;
+        histogram[*(imageIn+rowOffset+size_x+d)]++;
+        histogram[*(imageIn+rowOffset+size_x+d+1)]++;
+
+
+        // Get median
+        index = 0;
+        sum = 0;
+        while (sum < medianLimit) {
+            sum += histogram[index++];
+        }
+        *(imageOut+rowOffset+d) = index;
     }
 
 }
