@@ -20,11 +20,9 @@
 	//#define OPEN_MP
 
 // Sort algorithm :
-    // #define QUICKSORT_MEDIAN
+    //#define QUICKSORT_MEDIAN
     #define HISTOGRAM_MEDIAN
     //#define BUCKETSORT_MEDIAN
-    //#define QUICKSORT
-    // #define BUCKETSORT
 
 // Hardware optimization
 	//#define HW_MEDIAN
