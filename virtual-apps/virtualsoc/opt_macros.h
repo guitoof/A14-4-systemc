@@ -20,8 +20,9 @@
 	//#define OPEN_MP
 
 // Sort algorithm :
-    // #define QUICKSORT
-    #define BUCKETSORT
+    // #define QUICKSORT_MEDIAN
+    #define HISTOGRAM_MEDIAN
+    //#define BUCKETSORT_MEDIAN
 
 // Hardware optimization
 	 // #define HW_MEDIAN
@@ -49,11 +50,14 @@ void printOptimizations() {
      #ifdef HW_MEDIAN
     _printstrn(" - HW_MEDIAN");
     #endif
-    #ifdef QUICKSORT
-    _printstrn(" - Quick Sort");
+    #ifdef QUICKSORT_MEDIAN
+    _printstrn(" - QUICKSORT_MEDIAN");
     #endif
-    #ifdef BUCKETSORT
-    _printstrn(" - BUCKETSORT");
+    #ifdef HISTOGRAM_MEDIAN
+    _printstrn(" - HISTOGRAM_MEDIAN");
+    #endif
+    #ifdef BUCKETSORT_MEDIAN
+    _printstrn(" - BUCKETSORT_MEDIAN");
     #endif
 }
 
