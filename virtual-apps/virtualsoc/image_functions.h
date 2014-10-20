@@ -64,26 +64,35 @@ threshold_equ(unsigned char *imageIn, unsigned int size_x, unsigned int size_y, 
 void
 inline
 sobel (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, unsigned int size_y)
-{
+{   
+
     //Local variables
+    #ifdef REGS
+    register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    register unsigned int c, d, rowOffset = half_kernel_size*size_x;
     register unsigned char r0, r1, r2, r3, r4, r5, r6, r7, r8;
+    register int hBuff, vBuff, res;
+    #else
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     unsigned int c, d, rowOffset = half_kernel_size*size_x;
+    unsigned char r0, r1, r2, r3, r4, r5, r6, r7, r8;
     int hBuff, vBuff, res;
+    #endif   
+   
 
     //Compute
     #pragma omp for
     for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )
     {
         rowOffset = (half_kernel_size+c)*size_x;  
-        r0 = *(imageIn+rowOffset-size_x+half_kernel_size-1);
-        r1 = *(imageIn+rowOffset-size_x+half_kernel_size);
-        r2 = *(imageIn+rowOffset-size_x+half_kernel_size+1);
-        r3 = *(imageIn+rowOffset+half_kernel_size-1);
-        r4 = *(imageIn+rowOffset+half_kernel_size+1);
-        r5 = *(imageIn+rowOffset+size_x+half_kernel_size-1);
-        r6 = *(imageIn+rowOffset+size_x+half_kernel_size);
-        r7 = *(imageIn+rowOffset+size_x+half_kernel_size+1);
+        r0 = *(imageIn+c*size_x-size_x+half_kernel_size-1);
+        r1 = *(imageIn+c*size_x-size_x+half_kernel_size);
+        r2 = *(imageIn+c*size_x-size_x+half_kernel_size+1);
+        r3 = *(imageIn+c*size_x+half_kernel_size-1);
+        r4 = *(imageIn+c*size_x+half_kernel_size+1);
+        r5 = *(imageIn+c*size_x+size_x+half_kernel_size-1);
+        r6 = *(imageIn+c*size_x+size_x+half_kernel_size);
+        r7 = *(imageIn+c*size_x+size_x+half_kernel_size+1);
         for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )
         {
             hBuff = -r0
@@ -100,16 +109,16 @@ sobel (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x, uns
                     +r7;
             res = abs(hBuff)+abs(vBuff);
 
-            *(imageOut+rowOffset+d) = (res > 255) ? 255 : res;
+            *(imageOut+c*size_x+d) = (res > 255) ? 255 : res;
 
             r0 = r1;
             r1 = r2;
             r5 = r6;
             r6 = r7;
-            r2 = *(imageIn+rowOffset-size_x+d+2);
-            r3 = *(imageIn+rowOffset+half_kernel_size);
-            r4 = *(imageIn+rowOffset+half_kernel_size+1);
-            r7 = *(imageIn+rowOffset+size_x+half_kernel_size+2);
+            r2 = *(imageIn+c*size_x-size_x+d+2);
+            r3 = *(imageIn+c*size_x+half_kernel_size);
+            r4 = *(imageIn+c*size_x+half_kernel_size+1);
+            r7 = *(imageIn+c*size_x+size_x+half_kernel_size+2);
 
         }
     }

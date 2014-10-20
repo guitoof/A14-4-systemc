@@ -24,7 +24,6 @@ static unsigned char ImageOut2 [IMAGE_Y*IMAGE_X];
 #endif
 
 
-//unsigned int kernel[KERNEL_SIZE*KERNEL_SIZE] LOCAL_SHARED;
 
 int main ()
 {
