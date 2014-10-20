@@ -48,7 +48,7 @@ threshold_equ(unsigned char *imageIn, unsigned int size_x, unsigned int size_y, 
 
     unsigned int size = size_x*size_y;
     #pragma omp for
-    #ifdef LOOP_INV
+    #ifdef LOOP_DEC
     for(i=size-1; i>-1; i--)
     #else
     for(i=0; i<size; i++)

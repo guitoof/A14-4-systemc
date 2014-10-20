@@ -2,38 +2,23 @@
 #define OPT_MACROS_H
 
 #include "appsupport.h"
-//#include <stdio.h>
 
 // Cache memory
 	#define MEM_OPT
 
 // Sequential optimizations
 	// Loop inversion
-	#define LOOP_INV
+	#define LOOP_DEC
 	// Use registers
 	#define REGS
 
 // Parallel optimization
-	// Pipeline
-	//#define PIPELINE
 	// OpenMP
 	#define OPEN_MP
 
 // Sort algorithm :
-<<<<<<< HEAD
     #define QUICKSORT_MEDIAN
-    // #define HISTOGRAM_MEDIAN
-    //#define BUCKETSORT_MEDIAN
-    // #define QUICKSORT
-    // #define BUCKETSORT
-    //#define QUICKSORT_MEDIAN
-    // #define HISTOGRAM_MEDIAN
-    //#define BUCKETSORT_MEDIAN
-=======
-    //#define QUICKSORT_MEDIAN
-    #define HISTOGRAM_MEDIAN
-
->>>>>>> 57990e42a170665543cc9640f6ff12ba13565623
+    //#define HISTOGRAM_MEDIAN
 
 // Hardware optimization
 	#define HW_MEDIAN
@@ -43,17 +28,11 @@ void printOptimizations() {
     #ifdef MEM_OPT
     _printstrn(" - LOC_SHARED");
     #endif
-    #ifdef LOOP_INV
-    _printstrn(" - Loop inversion");
+    #ifdef LOOP_DEC
+    _printstrn(" - Loop decrementation");
     #endif
     #ifdef REGS
-    _printstrn(" - Register usage");
-    #endif
-    #ifdef ACCUMULATION
-    _printstrn(" - Accumulation");
-    #endif
-    #ifdef PIPELINE
-    _printstrn(" - Pipeline");
+    _printstrn(" - Registers");
     #endif
     #ifdef OPEN_MP
     _printstrn(" - Open MP");

@@ -8,9 +8,9 @@ void quickSort( unsigned char * array, int left, int right)
    if( left < right ) 
    {
     // divide and conquer
-        j = partition( array, left, right);
-       quickSort( array, left, j-1);
-       quickSort( array, j+1, right);
+      j = partition( array, left, right);
+      quickSort( array, left, j-1);
+      quickSort( array, j+1, right);
    }
     
 }

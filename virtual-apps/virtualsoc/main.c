@@ -6,7 +6,6 @@
 #include "appsupport.h"
 //#include "accsupport.h"
 //#include "countersupport.h"
-//#include "omp.h"
 #include "outmsupport.h"
 #include "hws_support.h"
 
@@ -57,6 +56,7 @@ int main ()
     _printstrp("Start Process with accelerator");
 
     //HW IMPLEMENTATION
+    // This condition has been removed to allow the program to run
     // if(myid==0) {        // change myid to num_proc jeudi 10:51
     //Write
     int k;
@@ -74,6 +74,7 @@ int main ()
     
 
     //Read
+     _printstrp("Reading Output image");
     for(k=0;k<(IMAGE_Y*IMAGE_X);k+=1) {
        ImageOut1[k] = acc_read_word (4*k);
     }
@@ -84,13 +85,13 @@ int main ()
     //SW IMPLEMENTATION    
      _printstrp("Start Process without accelerator");
 
-    #pragma omp parallel
-    {
+    //#pragma omp parallel
+    //{
     median(MyImage,
            ImageOut1,
            IMAGE_X,
            IMAGE_Y);
-    }
+    //}
 
     #endif
 

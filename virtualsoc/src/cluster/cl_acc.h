@@ -21,8 +21,6 @@ protected:
 
 
 
-
-
   char * acc_memory;
   // unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE] ;
   // unsigned char kernel_tmp[255] ; // 255 = max value of unsigned char
