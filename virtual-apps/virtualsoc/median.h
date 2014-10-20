@@ -15,11 +15,11 @@ quicksortMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int s
 
     //Local variables
     #ifdef REGS
-    register unsigned int c,d, e;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    register unsigned int c,d, rowOffset = half_kernel_size*size_x;
     #else
-    unsigned int c,d, e;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    unsigned int c,d, rowOffset = half_kernel_size*size_x;
     #endif
 
     unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
@@ -33,17 +33,17 @@ quicksortMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int s
     for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
     #endif
     {
-        kernel[0] = *(imageIn+(c-1)*(size_x) + half_kernel_size-1);
-        kernel[1] = *(imageIn+(c-1)*(size_x) + half_kernel_size);
-        kernel[2] = *(imageIn+(c-1)*(size_x) + half_kernel_size+1);
+        kernel[0] = *(imageIn+rowOffset - size_x + half_kernel_size-1);
+        kernel[1] = *(imageIn+rowOffset - size_x + half_kernel_size);
+        kernel[2] = *(imageIn+rowOffset - size_x + half_kernel_size+1);
 
-        kernel[3] = *(imageIn+c*(size_x) + half_kernel_size-1);
-        kernel[4] = *(imageIn+c*(size_x) + half_kernel_size);
-        kernel[5] = *(imageIn+c*(size_x) + half_kernel_size+1);
+        kernel[3] = *(imageIn+rowOffset + half_kernel_size-1);
+        kernel[4] = *(imageIn+rowOffset + half_kernel_size);
+        kernel[5] = *(imageIn+rowOffset + half_kernel_size+1);
 
-        kernel[6] = *(imageIn+(c+1)*(size_x) + half_kernel_size-1);
-        kernel[7] = *(imageIn+(c+1)*(size_x) + half_kernel_size);
-        kernel[8] = *(imageIn+(c+1)*(size_x) + half_kernel_size+1);
+        kernel[6] = *(imageIn+rowOffset + size_x + half_kernel_size-1);
+        kernel[7] = *(imageIn+rowOffset + size_x + half_kernel_size);
+        kernel[8] = *(imageIn+rowOffset + size_x + half_kernel_size+1);
 
         #ifdef LOOP_INV
         for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
@@ -63,9 +63,9 @@ quicksortMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int s
             kernel[7] = kernel[8]; 
 
             // Update 3nd col
-            kernel[2] = *(imageIn+(c-1)*(size_x) + d+1);
-            kernel[5] = *(imageIn+c*(size_x) + d+1);
-            kernel[8] = *(imageIn+(c+1)*(size_x) + d+1);
+            kernel[2] = *(imageIn+rowOffset-size_x + d+1);
+            kernel[5] = *(imageIn+rowOffset + d+1);
+            kernel[8] = *(imageIn+rowOffset+size_x + d+1);
 
             // Sort current kernel values
             quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
@@ -74,9 +74,71 @@ quicksortMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int s
             *(imageOut+c*size_x+d) = kernel[4];     
                 
         }
+        rowOffset += size_x;
     }
         
 }
+
+void shellSort(int* array, int size)
+{
+   int  i, j, buff = 0;
+   // step = 0;
+
+   // // Calcul du pas
+   // while(step<size)
+   // {
+   //    step = 3*step+1;
+   // }
+
+   // while(step!=0)
+   // {
+   //    step = (int)step/3;
+   //    for(i=step; i<size; i++)
+   //    {
+   //       buff = array[i];
+   //       j = i;
+
+   //       while((j>(step-1)) && (array[j-step]>buff))
+   //       { //swaping values
+   //          array[j] = array[j-step];
+   //          j = j-step;
+   //       }
+   //       array[j] = buff;
+   //    }
+   // }
+   // bool done;
+   //  for (i= 1; i < size; i++) {
+   //      buff = array[i];
+   //      j = i - 1;
+   //      done = false;
+   //      while ( !done ) {
+   //          if(array[j] > buff) {
+   //              array[j+1] = array[j];
+   //              j--;
+   //              if ( j < 0 )
+   //                  done = true;
+   //          } else
+   //              done = true;
+   //      }
+   //      array[j+1] = buff;
+   //  }
+
+
+   for(i=1;i<size;i++)
+    {
+        buff = array[i];
+        j=i-1;
+        while(buff>array[j] && j>=0)
+/*To sort elements in descending order, change temp<data[j] to temp>data[j] in above line.*/
+        {
+            array[j+1] = array[j];
+            --j;
+        }
+        array[j+1]=buff;
+    }
+
+}
+
 
 
 void
@@ -85,12 +147,12 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
 {
 
     //Local variables
-    #ifdef REGS
-    register unsigned int c,d, rowOffset;
+     #ifdef REGS
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    register unsigned int c,d, rowOffset = half_kernel_size*size_x;
     #else
-    unsigned int c,d, rowOffset = half_kernel_size*size_x;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+    unsigned int c,d, rowOffset = half_kernel_size*size_x;
     #endif
 
     int k;
@@ -142,7 +204,6 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
             while (sum < medianLimit) {
                 sum += histogram[index++];
             }
-            _printdecp("histogram", index);
             *(imageOut+rowOffset+d) = index;
         }
         rowOffset += size_x;
@@ -166,34 +227,6 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
 }
 
 
-void triShell(int* tableau, int longueur)
-{
-   int pas, i, j, memoire;
-   pas = 0;
-
-   // Calcul du pas
-   while(pas<longueur)
-   {
-      pas = 3*pas+1;
-   }
-
-   while(n!=0) // tant que le pas est > 0
-   {
-      pas = pas/3;
-      for(i=n; i<longueur; i++)
-      {
-         memoire = tableau[i]; // valeur à décaler éventuellement
-         j = i;
-
-         while((j>(pas-1)) && (tableau[j-pas]>memoire))
-         { // échange des valeurs
-            tableau[j] = tableau[j-pas];
-            j = j-pas;
-         }
-         tableau[j] = memoire;
-      }
-   }
-}
 
 // void
 // inline
@@ -334,7 +367,5 @@ void triShell(int* tableau, int longueur)
         
         
 // }
-=======
->>>>>>> b8eed908f13ec0373bc64d7533089324c3c1698b
 
 #endif //MEDIAN_H

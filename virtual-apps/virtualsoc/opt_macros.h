@@ -17,20 +17,12 @@
 	// Pipeline
 	//#define PIPELINE
 	// OpenMP
-	//#define OPEN_MP
+	#define OPEN_MP
 
 // Sort algorithm :
-<<<<<<< HEAD
-    #define QUICKSORT_MEDIAN
-    // #define HISTOGRAM_MEDIAN
-    //#define BUCKETSORT_MEDIAN
-    // #define QUICKSORT
-    // #define BUCKETSORT
-=======
     //#define QUICKSORT_MEDIAN
     #define HISTOGRAM_MEDIAN
-    //#define BUCKETSORT_MEDIAN
->>>>>>> b8eed908f13ec0373bc64d7533089324c3c1698b
+
 
 // Hardware optimization
 	//#define HW_MEDIAN
@@ -63,9 +55,6 @@ void printOptimizations() {
     #endif
     #ifdef HISTOGRAM_MEDIAN
     _printstrn(" - HISTOGRAM_MEDIAN");
-    #endif
-    #ifdef BUCKETSORT_MEDIAN
-    _printstrn(" - BUCKETSORT_MEDIAN");
     #endif
 }
 
