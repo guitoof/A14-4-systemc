@@ -188,132 +188,107 @@ void cl_acc::acc_processing()
 
 
 	// filtre median !
-
-	process1_ready.notify();
-
-	wait(10,SC_NS);
-	status = CL_ACC_INACTIVE;
-
-	//Debug
-	cout << "ACCELERATOR: DONE!"<<endl;
-}
-
-
-void cl_acc::process1()
-
-{
-	wait();
-
-
-
-	// Sort by copmparaison
 	int size_x = 126;
 	int size_y = 96;
 
+	status = CL_ACC_INACTIVE;
+	
+
 	#ifdef REGS
-    register unsigned int c,d, e;
+    register unsigned int c,d;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
     unsigned int c,d;
     int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
+    unsigned char kernel[KERNEL_SIZE*KERNEL_SIZE];
 
+MEM_OPT
+    //Compute
     #ifdef LOOP_INV
-        for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
+    for ( c=(size_y-half_kernel_size-1); c>(half_kernel_size-1); c-- )       // Iterate lines
+    #else
+    for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
+    #endif
+    {
+        kernel[0] = this->Read(ACC_MEM_ADDR + 4*((c-1)*size_x + half_kernel_size-1), MEM_WORD) ;
+        kernel[1] = this->Read(ACC_MEM_ADDR + 4*((c-1)*size_x + half_kernel_size) , MEM_WORD) ;
+        kernel[2] = this->Read(ACC_MEM_ADDR + 4*((c-1)*size_x + half_kernel_size+1), MEM_WORD) ;
+
+        kernel[3] = this->Read(ACC_MEM_ADDR + 4*((c)*size_x + half_kernel_size-1), MEM_WORD) ;
+        kernel[4] = this->Read(ACC_MEM_ADDR + 4*((c)*size_x + half_kernel_size) , MEM_WORD) ;
+        kernel[5] = this->Read(ACC_MEM_ADDR + 4*((c)*size_x + half_kernel_size+1) , MEM_WORD) ;
+
+        kernel[6] = this->Read(ACC_MEM_ADDR + 4*((c+1)*size_x + half_kernel_size-1) , MEM_WORD) ;
+        kernel[7] = this->Read(ACC_MEM_ADDR + 4*((c+1)*size_x + half_kernel_size) , MEM_WORD) ;
+        kernel[8] = this->Read(ACC_MEM_ADDR + 4*((c+1)*size_x + half_kernel_size+1) , MEM_WORD) ;
+
+        #ifdef LOOP_INV
+        for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
         #else
-        for ( c=half_kernel_size; c<(size_y-half_kernel_size); c++ )       // Iterate lines
+        for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
         #endif
-        {
-            ker_sig0.write(this->Read( START_ADDRESS + 4*((c-1)*(size_x) + half_kernel_size-1) , MEM_BYTE )) ;
-            ker_sig1.write(this->Read( START_ADDRESS + 4*((c-1)*(size_x) + half_kernel_size) , MEM_BYTE ));
-            ker_sig2.write(this->Read( START_ADDRESS + 4*((c-1)*(size_x) + half_kernel_size+1 ), MEM_BYTE ));
+        {     
 
-            ker_sig3.write(this->Read( START_ADDRESS + 4*(c*(size_x) + half_kernel_size-1) , MEM_BYTE ));
-            ker_sig4.write(this->Read( START_ADDRESS + 4*(c*(size_x) + half_kernel_size ), MEM_BYTE ));
-            ker_sig5.write(this->Read( START_ADDRESS + 4*(c*(size_x) + half_kernel_size+1), MEM_BYTE ));
+            // Shift 1st col
+            kernel[0] = kernel[1];
+            kernel[3] = kernel[4];
+            kernel[6] = kernel[7];
 
-            ker_sig6.write(this->Read( START_ADDRESS + 4*((c+1)*(size_x) + half_kernel_size-1) , MEM_BYTE ));
-            ker_sig7.write(this->Read( START_ADDRESS + 4*((c+1)*(size_x) + half_kernel_size ), MEM_BYTE ));
-            ker_sig8.write(this->Read( START_ADDRESS + 4*((c+1)*(size_x) + half_kernel_size+1 ), MEM_BYTE ));
+            // Shift 2nd col
+            kernel[1] = kernel[2];
+            kernel[4] = kernel[5];
+            kernel[7] = kernel[8]; 
 
-            #ifdef LOOP_INV
-            for ( d=(size_x-half_kernel_size-1); d>(half_kernel_size-1); d-- )       // Iterate columns
-            #else
-            for ( d=half_kernel_size; d<(size_x-half_kernel_size); d++ )       // Iterate columns
-            #endif
-            {        
+            // Update 3nd col
+            kernel[2] = this->Read(ACC_MEM_ADDR + 4*((c-1)*size_x + d+1) , MEM_WORD) ;
+            kernel[5] = this->Read(ACC_MEM_ADDR + 4*((c)*size_x + d+1) , MEM_WORD) ;
+            kernel[8] = this->Read(ACC_MEM_ADDR + 4*((c+1)*size_x + d+1) , MEM_WORD) ;
+            // Sort current kernel values
+            quickSort( kernel, 0, KERNEL_SIZE*KERNEL_SIZE - 1 );
 
-                // Shift 1st col
-                ker_sig0 = ker_sig1;
-                ker_sig3 = ker_sig4;
-                ker_sig6 = ker_sig7;
-
-                // Shift 2nd col
-                ker_sig1 = ker_sig2;
-                ker_sig4 = ker_sig5;
-                ker_sig7 = ker_sig8; 
-
-                // Update 3nd col
-                ker_sig2.write(this->Read( START_ADDRESS  + 4*((c-1)*(size_x) + d+1), MEM_BYTE ));  
-                ker_sig5.write(this->Read( START_ADDRESS  + 4*((c)*(size_x) + d+1 ), MEM_BYTE )); 
-                ker_sig8.write(this->Read( START_ADDRESS  + 4*((c+1)*(size_x) + d+1 ), MEM_BYTE )); 
-
-                // Sort by comparing kernel values
-              
-				   uint32_t array[9] ;
-				   array[0] = ker_sig0 ;
-				   array[1] = ker_sig1 ;
-				   array[2] = ker_sig2 ;
-				   array[3] = ker_sig3 ;
-				   array[4] = ker_sig4 ;
-				   array[5] = ker_sig5 ;
-				   array[6] = ker_sig6 ;
-				   array[7] = ker_sig7 ;
-				   array[8] = ker_sig8 ;
-
-				   		cout <<  ker_sig5 << endl;
-
-
-			       int pas, i, j, memoire;
-				   pas = 0;
-
-
-				   // Calcul du pas
-				   while(pas<9)
-				   {
-				      pas = 3*pas+1;
-				   }
-
-				   while(pas!=0) // tant que le pas est > 0
-				   {
-				      pas = pas/3;
-				      for(i=pas; i<9; i++)
-				      {
-				         memoire = array[i]; // valeur à décaler éventuellement
-				         j = i;
-
-				         while((j>(pas-1)) && (array[j-pas]>memoire))
-				         { // échange des valeurs
-				            array[j] = array[j-pas];
-				            j = j-pas;
-				         }
-				         array[j] = memoire;
-				      }
-				   }
-//////////////
-
-
-
-            this->Write(ACC_MEM_ADDR + 4*(c*size_x + d) , array[4], MEM_BYTE );
-
+            // Get median
             // *(imageOut+c*size_x+d) = kernel[4];     
-			}
-		}
 
+            this->Write(ACC_START_ADDR + 4*(c*size_x+d - 1), kernel[4], MEM_WORD);    
+        }
+    }
+	//Debug
+	cout << "ACCELERATOR: DONE!"<<endl;
 }
 
 
+
+void cl_acc::quickSort (unsigned char * array, int left, int right) {
+
+	int j;
+
+   if( left < right ) 
+   {
+    // divide and conquer
+        j = partition( array, left, right);
+       quickSort( array, left, j-1);
+       quickSort( array, j+1, right);
+   }
+}
+
+int cl_acc::partition( unsigned char * array, int left, int right) {
+   unsigned char pivot;
+   int i, j, t;
+   pivot = array[left];
+   i = left; j = right+1;
+        
+   while(1)
+   {
+    do ++i; while( array[i] <= pivot && i <= right );
+    do --j; while( array[j] > pivot );
+    if( i >= j ) break;
+    t = array[i]; array[i] = array[j]; array[j] = t;
+   }
+   t = array[left]; array[left] = array[j]; array[j] = t;
+   return j;
+}
 
 
 

@@ -36,21 +36,21 @@ public:
   sc_in<bool> sl_req;
   sc_out<bool> sl_rdy;
 
-  sc_event process1_ready;
+  // sc_event process1_ready;
 
-  sc_signal< uint32_t > ker_sig0 ;
-  sc_signal< uint32_t > ker_sig1 ;
-  sc_signal< uint32_t > ker_sig2 ;
-  sc_signal< uint32_t > ker_sig3 ;
-  sc_signal< uint32_t > ker_sig4 ;
-  sc_signal< uint32_t > ker_sig5 ;
-  sc_signal< uint32_t > ker_sig6 ;
-  sc_signal< uint32_t > ker_sig7 ;
-  sc_signal< uint32_t > ker_sig8 ;
+  // sc_signal< uint32_t > ker_sig0 ;
+  // sc_signal< uint32_t > ker_sig1 ;
+  // sc_signal< uint32_t > ker_sig2 ;
+  // sc_signal< uint32_t > ker_sig3 ;
+  // sc_signal< uint32_t > ker_sig4 ;
+  // sc_signal< uint32_t > ker_sig5 ;
+  // sc_signal< uint32_t > ker_sig6 ;
+  // sc_signal< uint32_t > ker_sig7 ;
+  // sc_signal< uint32_t > ker_sig8 ;
 
-  sc_signal< uint32_t > res0;
+  // sc_signal< uint32_t > res0;
 
-
+  // int compteur = 0 ;
 
 
   
@@ -62,6 +62,9 @@ public:
   cl_status status;
 
   //Members
+void quickSort( unsigned char * array, int left, int right) ;
+int partition( unsigned char * array, int left, int right) ;
+
   void execute ( );
   void acc_processing();
   void process1();
@@ -173,8 +176,8 @@ public:
       sensitive << clock.pos();
       SC_THREAD(acc_processing);
       sensitive << start_processing;
-      SC_THREAD(process1);
-      sensitive << process1_ready;
+      // SC_THREAD(process1);
+      // sensitive << process1_ready;
 
       printf("Done!\n");
     }

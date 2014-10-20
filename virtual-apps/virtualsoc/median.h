@@ -89,8 +89,9 @@ histMedian (unsigned char *imageIn, unsigned char *imageOut, unsigned int size_x
     register unsigned int c,d, rowOffset;
     register int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #else
+        int half_kernel_size = (KERNEL_SIZE - 1) / 2;
+
     unsigned int c,d, rowOffset = half_kernel_size*size_x;
-    int half_kernel_size = (KERNEL_SIZE - 1) / 2;
     #endif
 
     int k;
@@ -177,10 +178,10 @@ void triShell(int* tableau, int longueur)
       pas = 3*pas+1;
    }
 
-   while(n!=0) // tant que le pas est > 0
+   while(pas!=0) // tant que le pas est > 0
    {
       pas = pas/3;
-      for(i=n; i<longueur; i++)
+      for(i=pas; i<longueur; i++)
       {
          memoire = tableau[i]; // valeur à décaler éventuellement
          j = i;
@@ -334,7 +335,6 @@ void triShell(int* tableau, int longueur)
         
         
 // }
-=======
->>>>>>> b8eed908f13ec0373bc64d7533089324c3c1698b
+
 
 #endif //MEDIAN_H
